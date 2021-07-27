@@ -161,7 +161,7 @@ Articulos de limpieza</textarea
       const imprimir = async () => {
         try {
           await getRoommates();
-          // await getGastos();
+          await getGastos();
           $("#roommates").html("");
           $("#roommatesSelect").html("");
           $("#roommatesSelectModal").html("");

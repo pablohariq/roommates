@@ -1,7 +1,10 @@
 const http = require('http')
 const fs = require('fs')
 const {agregarRoommate, obtenerRoommates} = require('./roommates')
-const {agregarGasto, obtenerGastos} = require('./gastos')
+const {agregarGasto, obtenerGastos, borrarGasto} = require('./gastos')
+const {v4: uuidv4} = require('uuid')
+const url = require('url')
+
 
 http
 .createServer(async (req, res) => {
@@ -36,6 +39,7 @@ http
         })
         req.on('end', () => {
             body = JSON.parse(body)
+            body.id = uuidv4().slice(0,6)
             agregarGasto(body)
             res.end()
         })
@@ -43,7 +47,13 @@ http
 
     // if (req.url.startsWith('/gasto') && req.method == 'PUT')
 
-    // if (req.url.startsWith('/gasto') && req.method == 'DELETE')
+    if (req.url.startsWith('/gasto') && req.method == 'DELETE'){
+        const id = url.parse(req.url, true).query.id
+        console.log(id)
+        borrarGasto(id)
+        res.statusCode = 200
+        res.end()
+    }
 
 
     if (req.url.startsWith('/gastos') && req.method == 'GET'){
