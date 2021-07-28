@@ -17,6 +17,7 @@
   </head>
   <body class="p-4">
     <h1 class="">Roommates</h1>
+
     <hr class="mb-5 bg-light w-25 mx-auto" />
     <div class="row w-100 m-auto">
       <div class="col-4">
@@ -106,7 +107,7 @@ Articulos de limpieza</textarea
                 ></select>
                 <h6>Descripción</h6>
                 <textarea class="form-control w-50 mb-2" id="descripcionModal">
-    Articulos de limpieza</textarea
+     Articulos de limpieza</textarea
                 >
 
                 <h6>Monto:</h6>
@@ -126,8 +127,42 @@ Articulos de limpieza</textarea
           </div>
         </div>
       </div>
+      
     </div>
+    <button class="btn btn-white text-white bg-secondary mb-2 my-2" data-toggle="modal" data-target="#modalAdvertencia">
+      Reiniciar App
+    </button>
 
+    <div
+      class="modal fade"
+      id="modalAdvertencia"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="border rounded p-2 m-auto p-4">
+              <h4>Advertencia</h4>
+              <hr class="bg-light w-25 mx-auto" />
+              <h4>Esta acción eliminará todos los registros de los roommates y los gastos.</h4>
+              <h4>¿Desea continuar?</h4>
+
+              </div>
+              <div class="d-block my-1">
+                <button class="btn bg-primary text-white m-auto" onclick="reiniciarApp()">
+                  Reiniciar App
+                </button>
+                <button class="btn bg-secondary text-white m-auto" onclick="noReiniciar()">
+                  Volver
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js "
       crossorigin="anonymous"
@@ -254,6 +289,16 @@ Articulos de limpieza</textarea
       };
 
       imprimir();
+
+      const reiniciarApp = async () => {
+        await fetch("http://localhost:3000/reiniciar") 
+        $("#modalAdvertencia").modal("hide");
+        imprimir();
+      }
+
+      const noReiniciar = () => {
+        $("#modalAdvertencia").modal("hide");
+      }
     </script>
 
     <style>
