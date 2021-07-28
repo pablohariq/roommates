@@ -5,6 +5,7 @@ const {agregarGasto, obtenerGastos, borrarGasto, editarGasto} = require('./gasto
 const {v4: uuidv4} = require('uuid')
 const url = require('url')
 const {actualizarDeudasyPagos, reiniciarAplicacion} = require('./utilidades')
+const {enviarNotificacion} = require('./correos')
 
 
 http
@@ -48,6 +49,7 @@ http
             body = JSON.parse(body)
             body.id = uuidv4().slice(0,6)
             agregarGasto(body)
+            enviarNotificacion(body)
             res.end()
         })
     }
