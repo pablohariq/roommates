@@ -1,10 +1,12 @@
 const fs = require('fs')
 const {v4: uuidv4} = require('uuid')
+const {actualizarDeudasyPagos} = require('./utilidades')
 
 //POST gasto
 const agregarGasto = (gasto) => {
     const {gastos} = obtenerGastos()
     gastos.push(gasto)
+    actualizarDeudasyPagos()
     fs.writeFileSync('./assets/json/gastos.json', JSON.stringify({gastos: gastos}))
 }
 
@@ -21,11 +23,20 @@ const borrarGasto = (id) => {
     const {gastos: arregloGastos} = JSON.parse(gastosJSON)
     const indice = arregloGastos.findIndex((g) => g.id == id)
     arregloGastos.splice(indice, 1)
-    console.log(arregloGastos)
     //guardar el nuevo arreglo en el json de gastos
     fs.writeFileSync('./assets/json/gastos.json', JSON.stringify({gastos: arregloGastos}))
+    actualizarDeudasyPagos()
 }
 
 //PUT gasto
+const editarGasto = (id, nuevoGasto) => { //
+    const gastosJSON = fs.readFileSync('./assets/json/gastos.json', 'utf-8')
+    const {gastos: arregloGastos} = JSON.parse(gastosJSON)
+    const indice = arregloGastos.findIndex(g => g.id == id)
+    nuevoGasto.id = id
+    arregloGastos[indice] = nuevoGasto
+    fs.writeFileSync('./assets/json/gastos.json', JSON.stringify({gastos: arregloGastos}))
+    actualizarDeudasyPagos()
+}
 
-module.exports = {agregarGasto, obtenerGastos, borrarGasto}
+module.exports = {agregarGasto, obtenerGastos, borrarGasto, editarGasto}

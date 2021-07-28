@@ -1,6 +1,7 @@
 const axios = require('axios')
 const {v4: uuidv4} = require('uuid')
 const fs = require('fs')
+const {actualizarDeudasyPagos} = require('./utilidades')
 
 //Roommate POST
 const agregarRoommate = async () => {
@@ -22,7 +23,7 @@ const agregarRoommate = async () => {
                     console.log(err)
                 }
                 else{
-                    console.log(roommates)
+                    // console.log(roommates)
                 }
             })
         }
@@ -41,7 +42,6 @@ const obtenerRoommates = () => {
                 resolve(roommates)
             }
         })
-
     })
 }
 module.exports = {agregarRoommate, obtenerRoommates}
