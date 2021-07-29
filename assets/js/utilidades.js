@@ -1,7 +1,22 @@
 const fs = require('fs')
+const moment = require('moment')
 
 function cuantoDebe(nombre, gastos, nroRoommates){
-    const sumaGastosAjenos = gastos.reduce((acc, curr) => {
+    //eliminar los gastos anteriores al ingreso del roommate en cuestión
+    const contenidoRoommates = fs.readFileSync("./assets/json/roommates.json", 'utf8')
+    const {roommates} = JSON.parse(contenidoRoommates)
+    const fechaIngresoRoommate = moment(roommates.find(r => r.nombre == nombre).fechaingreso)
+    //se define un GASTO COBRABLE a un roommate como un gasto posterior a la fecha de ingreso del roommate
+    const gastosCobrables = gastos.filter((g) => {
+        const fechaIngresoGasto = moment(g.fechaingreso)
+        if (fechaIngresoGasto.isAfter(fechaIngresoRoommate)){
+            return g
+        }
+        else{
+            return
+        }
+    })
+    const sumaGastosAjenos = gastosCobrables.reduce((acc, curr) => {
         if (curr.roommate != nombre){
             const resultadoParcial = acc + curr.monto
             return resultadoParcial

@@ -2,6 +2,8 @@ const axios = require('axios')
 const {v4: uuidv4} = require('uuid')
 const fs = require('fs')
 const {actualizarDeudasyPagos} = require('./utilidades')
+const moment = require('moment')
+
 
 //Roommate POST
 const agregarRoommate = async () => {
@@ -11,7 +13,8 @@ const agregarRoommate = async () => {
         nombre: `${datosUsuario.name.first} ${datosUsuario.name.last}`,
         id: uuidv4().slice(0,6),
         debe: 0,
-        recibe: 0
+        recibe: 0,
+        fechaingreso: moment()
     }
     fs.readFile('./assets/json/roommates.json', (err, data) => {
         if (err) throw err;

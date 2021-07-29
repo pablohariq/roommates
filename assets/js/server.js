@@ -29,7 +29,6 @@ http
     }
 
     if (req.url.startsWith('/roommates') && req.method == 'GET'){
-        actualizarDeudasyPagos()
         const roommates = await obtenerRoommates()
         fs.readFile('./assets/json/roommates.json', 'utf-8', (err, data) => {
             if (err) console.log(err)
@@ -50,6 +49,7 @@ http
             body.id = uuidv4().slice(0,6)
             agregarGasto(body)
             enviarNotificacion(body)
+            actualizarDeudasyPagos()
             res.end()
         })
     }

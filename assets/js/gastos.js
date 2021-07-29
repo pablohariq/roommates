@@ -1,10 +1,13 @@
 const fs = require('fs')
 const {v4: uuidv4} = require('uuid')
 const {actualizarDeudasyPagos} = require('./utilidades')
+const moment = require('moment')
+
 
 //POST gasto
 const agregarGasto = (gasto) => {
     const {gastos} = obtenerGastos()
+    gasto.fechaingreso = moment()
     gastos.push(gasto)
     actualizarDeudasyPagos()
     fs.writeFileSync('./assets/json/gastos.json', JSON.stringify({gastos: gastos}))
@@ -12,6 +15,7 @@ const agregarGasto = (gasto) => {
 
 //GET gasto
 const obtenerGastos = () => {
+    actualizarDeudasyPagos()
     const gastosJSON = fs.readFileSync('./assets/json/gastos.json', 'utf-8')
     const contenidoArchivoGastos = JSON.parse(gastosJSON)
     return contenidoArchivoGastos
